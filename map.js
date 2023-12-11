@@ -353,12 +353,87 @@ const connections = [
 		companyLocation: "Stockholm, Sweden",
 		supplierCountry: "Bangladesh",
 	},
+	{
+		company: "H&M",
+		companyLocation: "Stockholm, Sweden",
+		supplierCountry: "China",
+	},
+	{
+		company: "H&M",
+		companyLocation: "Stockholm, Sweden",
+		supplierCountry: "Turkey",
+	},
+	{
+		company: "Nike",
+		companyLocation: "Beaverton,OR",
+		supplierCountry: "China",
+	},
+	{
+		company: "Nike",
+		companyLocation: "Beaverton,OR",
+		supplierCountry: "Sri Lanka",
+	},
+	{
+		company: "Nike",
+		companyLocation: "Beaverton,OR",
+		supplierCountry: "United States",
+	},
+	{
+		company: "Zara",
+		companyLocation: "Spain",
+		supplierCountry: "Bangladesh",
+	},
+	{
+		company: "Zara",
+		companyLocation: "Spain",
+		supplierCountry: "China",
+	},
+	{
+		company: "Adidas",
+		companyLocation: "Herzogenaurach, Germany",
+		supplierCountry: "India",
+	},
+	{
+		company: "Adidas",
+		companyLocation: "Herzogenaurach, Germany",
+		supplierCountry: "Turkey",
+	},
+	{
+		company: "Adidas",
+		companyLocation: "Herzogenaurach, Germany",
+		supplierCountry: "China",
+	},
+	{
+		company: "GAP",
+		companyLocation: "San Francisco, CA",
+		supplierCountry: "China",
+	},
+	{
+		company: "GAP",
+		companyLocation: "San Francisco, CA",
+		supplierCountry: "Cambodia",
+	},
+	{
+		company: "GAP",
+		companyLocation: "San Francisco, CA",
+		supplierCountry: "Bangldadesh",
+	},
 ];
 
 // Geocoded locations (latitude and longitude)
 const locations = {
 	"Stockholm, Sweden": { lat: 59.3293, lon: 18.0686 },
 	Bangladesh: { lat: 23.685, lon: 90.3563 },
+	"Beaverton,OR": { lat: 45.486599, lon: -122.795609 },
+	China: { lat: 35.86166, lon: 104.195396 },
+	"Sri Lanka": { lat: 7.873054, lon: 80.771797 },
+	"United States": { lat: 37.09024, lon: -95.712891 },
+	Turkey: { lat: 38.963745, lon: 35.24332 },
+	Spain: { lat: 40.463669, lon: -3.74922 },
+	India: { lat: 20.593683, lon: 78.962883 },
+	"Herzogenaurach, Germany": { lat: 49.56892, lon: 49.56892 },
+	"SF, CA": { lat: 37.774929, lon: -122.419418 },
+	Cambodia: { lat: 12.5657, lon: 104.991 },
 };
 
 // Function to project coordinates to the map
@@ -476,6 +551,30 @@ d3.json(
 				tooltip.transition().duration(500).style("opacity", 0);
 			});
 
+		const defs = svg.append("defs");
+
+		const gradient = defs
+			.append("linearGradient")
+			.attr("id", "line-gradient")
+			.attr("gradientUnits", "userSpaceOnUse")
+			.attr("x1", companyCoords[0])
+			.attr("y1", companyCoords[1])
+			.attr("x2", supplierCoords[0])
+			.attr("y2", supplierCoords[1]);
+
+		// Define the start and end points of the gradient
+		gradient
+			.append("stop")
+			.attr("offset", "0%")
+			.attr("stop-color", "black")
+			.attr("stop-opacity", 1);
+
+		gradient
+			.append("stop")
+			.attr("offset", "100%")
+			.attr("stop-color", "black")
+			.attr("stop-opacity", 0);
+
 		// Draw line connecting company and supplier
 		const connectionLine = svg
 			.append("line")
@@ -483,7 +582,7 @@ d3.json(
 			.attr("y1", companyCoords[1])
 			.attr("x2", supplierCoords[0])
 			.attr("y2", supplierCoords[1])
-			.style("stroke", "black")
+			.style("stroke", "url(#line-gradient)")
 			.style("stroke-width", 2);
 		connectionLine
 			.on("mouseover", function (event) {
